@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Movie</title>
+    <script src="js/cadastroView.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Watch Films</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cadastro.html" class="active">Register</a></li>
+            <li><a href="search.html">Search</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="form-section">
+    <div class="form-card">
+        <h2>Movie Registration</h2>
+
+        <form enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="title" placeholder="Insert the movie title">
+            </div>
+
+            <div class="form-group">
+                <label>Year</label>
+                <input type="number" id="year" placeholder="Release year">
+            </div>
+
+            <div class="form-group">
+                <label>Genre</label>
+                <input type="text" id="genre" placeholder="Movie genre">
+            </div>
+
+            <div class="form-group">
+                <label>Poster</label>
+                <input type="file" id="poster">
+            </div>
+
+            <button type="button" onclick="cadastrarFilmePoster()">Submit</button>
+        </form>
+    </div>
+</section>
+
+</body>
+</html>

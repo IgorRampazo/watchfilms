@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Movies</title>
+    <script src="js/searchView.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">Watch Films</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cadastro.html">Register</a></li>
+            <li><a href="search.html" class="active">Search</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="form-section">
+    <div class="form-card">
+        <h2>Search Movie</h2>
+
+        <div class="form-group">
+            <label>Movie Name</label>
+            <input type="text" id="search1" placeholder="Type the movie name">
+        </div>
+
+        <button onclick="parseSearch()">Search</button>
+    </div>
+</section>
+
+<section class="results-section">
+    <h2>Results</h2>
+    <div class="table-container">
+        <table id="tabelaSeach"></table>
+    </div>
+</section>
+
+</body>
+</html>
