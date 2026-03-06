@@ -28,22 +28,40 @@
         <form enctype="multipart/form-data">
             <div class="form-group">
                 <label>Title</label>
-                <input type="text" id="title" placeholder="Insert the movie title">
+                <input type="text" id="title" name="title" placeholder="Insert the movie title">
             </div>
 
             <div class="form-group">
                 <label>Year</label>
-                <input type="number" id="year" placeholder="Release year">
+                <input type="number" id="year" name="year" placeholder="Release year">
             </div>
 
             <div class="form-group">
                 <label>Genre</label>
-                <input type="text" id="genre" placeholder="Movie genre">
+                <select id="genre" name="genre">
+                    <option value="">Select genre</option>
+
+                    <option value="Action">Action</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Animation">Animation</option>
+                    <option value="Biography">Biography</option>
+                    <option value="Comedy">Comedy</option>
+                    <option value="Crime">Crime</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="War">War</option>
+                    <option value="Western">Western</option>
+                </select>
             </div>
 
             <div class="form-group">
                 <label>Poster</label>
-                <input type="file" id="poster">
+                <input type="file" id="poster" name="poster">
             </div>
 
             <button type="button" onclick="cadastrarFilmePoster()">Submit</button>

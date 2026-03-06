@@ -1,4 +1,5 @@
-function cadastrarFilme(){
+function cadastrarFilme()
+{
     const movie = new Object();
     movie.title = document.forms[0].title.value;
     movie.year = document.forms[0].year.value;
@@ -25,23 +26,35 @@ function cadastrarFilme(){
     alert(JSON.stringify(movie));
 }
 
-function cadastrarFilmePoster(){
+function cadastrarFilmePoster()
+{
     const formMovie = document.forms[0];
+    const formData = new FormData(formMovie);
 
-    const requestOptions = {
-        method: "POST",
-        body: new FormData(formMovie)
-    };
-    fetch("http://localhost:8080/apis/add-movie-poster", requestOptions)
-        .then(response => {
-            if(response.status === 200){
-                return response.json()
-                    .then(data => {
-                        alert("Adicionado com sucesso");
-                    });
-            }
-            else {
-                alert("Erro ao adicionar o filme!");
-            }
-        });
+    for (let pair of formData.entries())
+    {
+        console.log(pair[0], pair[1]);
+    }
+
+    fetch("http://localhost:8080/apis/add-movie-poster",
+        { method: "POST", body: formData })
+    .then(response =>
+    {
+        console.log("STATUS:", response.status);
+
+        if(response.status === 200)
+            return response.json();
+        else
+            throw new Error("Erro no servidor");
+    })
+    .then(data =>
+    {
+        console.log("Resposta:", data);
+        alert("Adicionado com sucesso");
+    })
+    .catch(err =>
+    {
+        console.error(err);
+        alert("Erro ao adicionar o filme");
+    });
 }

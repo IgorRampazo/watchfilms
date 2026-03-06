@@ -5,12 +5,18 @@ import com.example.watchfilms.entities.Movie;
 import com.example.watchfilms.repositories.MovieRepository;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -126,46 +132,62 @@ public class MoviesRestControl {
     }
 
     @PostMapping("add-movie-poster")
-    public ResponseEntity<Object> addMoviePoster(String title, String year, String genre, MultipartFile poster){
-        final String UPLOADED_FOLDER = "scr/main/resources/static/images/";
-        if(title == null || title.isEmpty() || year == null || genre == null || genre.isEmpty() || year.isEmpty()){
-            return ResponseEntity.badRequest().body(new Erro("INCOMPLETE INTELS", "Enter all informations (TITLE, YEAR OF PRODUCTION AND GENRE)"));
+    public ResponseEntity<Object> addMoviePoster(String title, String year, String genre, MultipartFile poster)
+    {
+        Path uploadPath = Paths.get("uploads/images").toAbsolutePath();
+
+        try
+        {
+            Files.createDirectories(uploadPath);
         }
-        else {
-            Movie movie = new Movie(title, year, genre);
-            String filename = "404.png";
-            if(poster != null){
-                filename = poster.getOriginalFilename();
-                try
-                {
-                    File uploadedFile = new File(UPLOADED_FOLDER);
-                    if(!uploadedFile.exists())
-                        uploadedFile.mkdir();
-                    poster.transferTo(new File(uploadedFile.getAbsolutePath() + "\\"+ filename));
-                } catch (IOException e) {
-
-                }
-
-            }
-            movie.setPoster(filename);
-            if(!filename.equals("404.png")){
-                try {
-                    // Caminho para salvar a thumbnail
-                    String thumbName = "thumb_" + filename;
-                    File outputFile = new File("scr/main/resources/static/uploads/" + thumbName);
-                    // Criar a thumbnail (ex: 200x200)
-                    Thumbnails.of(poster.getInputStream())
-                            .size(100, 100)
-                            .outputFormat("jpg")
-                            .toFile(outputFile);
-
-                } catch (IOException e) {
-
-                }
-            }
-            movieRepository.getMovies().add(movie);
-            return ResponseEntity.ok().body(movie);
+        catch(IOException e)
+        {
+            e.printStackTrace();
         }
+
+        Movie movie = new Movie(title, year, genre);
+        String filename = "404.png";
+
+        if(poster != null && !poster.isEmpty())
+        {
+            try
+            {
+                filename = Paths.get(poster.getOriginalFilename()).getFileName().toString();
+
+                File file = uploadPath.resolve(filename).toFile();
+
+                poster.transferTo(file);
+
+                // ----- thumb ----- //
+                Path thumbPath = Paths.get("uploads/thumbs").toAbsolutePath();
+                Files.createDirectories(thumbPath);
+
+                String thumbName = "thumb_" + filename.replaceAll("\\..*$", ".jpg");
+                File thumbFile = thumbPath.resolve(thumbName).toFile();
+
+                Thumbnails.of(file).size(100,100).outputFormat("jpg").toFile(thumbFile);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        movie.setPoster(filename);
+
+        movieRepository.getMovies().add(movie);
+
+        return ResponseEntity.ok(movie);
     }
 
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer
+    {
+        @Override
+        public void addResourceHandlers(ResourceHandlerRegistry registry)
+        {
+            registry.addResourceHandler("/images/**").addResourceLocations("file:uploads/images/");
+            registry.addResourceHandler("/thumbs/**").addResourceLocations("file:uploads/thumbs/");
+        }
+    }
 }

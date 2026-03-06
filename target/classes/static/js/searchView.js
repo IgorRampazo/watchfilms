@@ -1,9 +1,20 @@
 function mountTable(json){
-    let table = "";
-    for(filme of json){
-        table+=`<tr><td>${filme.title}</td> <td>${filme.year}</td> <td>${filme.genre}</td></tr>`
-    }
-    return table
+   let table = "";
+
+   for(filme of json)
+   {
+      table += `
+      <tr>
+         <td>${filme.title}</td>
+         <td>${filme.year}</td>
+         <td>${filme.genre}</td>
+         <td>
+            <img src="/images/${filme.poster}" onerror="this.src='/images/404.png'" width="60">
+         </td>
+      </tr>`;
+   }
+
+   return table;
 }
 
 

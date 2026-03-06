@@ -191,6 +191,33 @@ input:focus
    box-shadow: 0 0 0 2px #6c63ff;
 }
 
+select
+{
+   padding: 0.9rem;
+   border-radius: 10px;
+   border: 1px solid transparent;
+   background: rgba(255,255,255,0.06);
+   color: #fff;
+   font-size: 0.95rem;
+   transition: 0.25s;
+   appearance: none;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+}
+
+select:focus
+{
+   outline: none;
+   border: 1px solid transparent;
+   box-shadow: 0 0 0 2px #6c63ff;
+}
+
+select option
+{
+   background: #0f0f14;
+   color: #fff;
+}
+
 button
 {
    width: 100%;
